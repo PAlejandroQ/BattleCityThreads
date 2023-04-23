@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ProgramacionConcurrente.iml" filepath="$PROJECT_DIR$/ProgramacionConcurrente.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BattleCityThreads.iml" filepath="$PROJECT_DIR$/BattleCityThreads.iml" />
     </modules>
   </component>
 </project>
