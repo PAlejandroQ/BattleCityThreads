@@ -100,4 +100,8 @@ public class Juego {
         }
     }
 
+    public int getNumTanques(){
+        return tanques.size();
+    }
+
 }

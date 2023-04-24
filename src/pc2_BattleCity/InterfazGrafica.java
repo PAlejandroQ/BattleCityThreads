@@ -8,8 +8,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class InterfazGrafica extends JFrame {
-
-    GameBoardCanvas gameBoardCanvas = new GameBoardCanvas();
+    GameBoardCanvas gameBoardCanvas;
     public static final int HEIGHT=800;
     public static final int WIDTH=800;
     public static final int GRIDSIZE=20;
@@ -27,32 +26,19 @@ public class InterfazGrafica extends JFrame {
 
 
     public InterfazGrafica() {
+        this.juego = new Juego();
+        this.gameBoardCanvas = new GameBoardCanvas();
+
         gameBoardCanvas.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        /*
-        try {
-            BufferedImage myPicture = ImageIO.read(new File("src/pc2_BattleCity/tank.png"));
-            JLabel picLabel = new JLabel(new ImageIcon(myPicture.getScaledInstance(3*GRIDSIZE,3*GRIDSIZE,Image.SCALE_SMOOTH)));
-
-            gameBoardCanvas.add(picLabel);
-
-            picLabel.setBounds(10,20,picLabel.getWidth(), picLabel.getHeight());
-            gameBoardCanvas.setLayout(null);
-            System.out.println(picLabel.getLocation());
-            gameBoardCanvas.repaint();
-        } catch (IOException ex) {
-            System.out.println("No se encontró imagen");
-        }*/
-
 
         this.add(gameBoardCanvas);
-
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         this.pack();
         this.setResizable(false);
         this.setTitle("BATTLECITY");
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.juego = new Juego();
+
         // Crear objetos
         // ...
 
@@ -67,18 +53,29 @@ public class InterfazGrafica extends JFrame {
     }
 
     class GameBoardCanvas extends JPanel{
-        ImagePanel p = new ImagePanel(2,2);
+        ImagePanel p[] = new ImagePanel[3];
 
+        int numTanques = 3;
 
         @Override
         public void paintComponent(Graphics g){
             super.paintComponent(g);
-
             crearObjetos(g);
+            dibujaTanques();
             setBackground(new Color(4,6,46));
-            p.paintComponent(g);
+            for(int i=0;i<numTanques;++i){
+                p[i].paintComponent(g);
+            }
+        }
+        public void dibujaTanques(){
+            p[0]=new ImagePanel(2,2);
+            p[1]= new ImagePanel(2, juego.mapa.getAlto()-5);
+            p[2]= new ImagePanel(juego.mapa.getAncho()-5, 2);
         }
     }
+
+
+
     private void dibujaMetal(int x, int y,Graphics g2d){
         g2d.setColor(Color.BLACK);
         g2d.drawRect(x*GRIDSIZE, y*GRIDSIZE,GRIDSIZE, GRIDSIZE);
