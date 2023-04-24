@@ -1,5 +1,6 @@
 package pc2_BattleCity;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -20,7 +21,7 @@ public class Servidor {
     public Servidor(int puerto) {
         this.puerto = puerto;
         this.clientesConectados = new ArrayList<>();
-        this.mapa = new Mapa(new int[100][100]);
+        //this.mapa = new Mapa(new int[100][100]);
         this.tanques = new ArrayList<>();
         this.balas = new ArrayList<>();
         this.enemigos = new ArrayList<>();
@@ -86,6 +87,12 @@ public class Servidor {
     }
 
     public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new InterfazGrafica();
+            }
+        });
         Servidor servidor = new Servidor(5000);
         servidor.iniciarServidor();
     }

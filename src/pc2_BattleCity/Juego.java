@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Juego {
-    private Mapa mapa;
+    public Mapa mapa;
     private List<Tanque> tanques;
     private List<Bala> balas;
     private List<Enemigo> enemigos;
@@ -12,10 +12,10 @@ public class Juego {
     // Constructor
     public Juego() {
         // Crear el mapa, los tanques, las balas y los enemigos
-        mapa = new Mapa(new int[100][100]);
-        tanques = new ArrayList<>();
-        balas = new ArrayList<>();
-        enemigos = new ArrayList<>();
+        this.mapa = new Mapa(1);
+        this.tanques = new ArrayList<>();
+        this.balas = new ArrayList<>();
+        this.enemigos = new ArrayList<>();
         crearTanques();
         crearEnemigos();
     }
