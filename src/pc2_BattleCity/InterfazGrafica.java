@@ -28,23 +28,25 @@ public class InterfazGrafica extends JFrame {
 
     public InterfazGrafica() {
         gameBoardCanvas.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        gameBoardCanvas.setLayout(new FlowLayout());
+        /*
         try {
             BufferedImage myPicture = ImageIO.read(new File("src/pc2_BattleCity/tank.png"));
             JLabel picLabel = new JLabel(new ImageIcon(myPicture.getScaledInstance(3*GRIDSIZE,3*GRIDSIZE,Image.SCALE_SMOOTH)));
-            picLabel.setLocation(0,0);
-            gameBoardCanvas.add(picLabel);
-            gameBoardCanvas.repaint();
 
+            gameBoardCanvas.add(picLabel);
+
+            picLabel.setBounds(10,20,picLabel.getWidth(), picLabel.getHeight());
+            gameBoardCanvas.setLayout(null);
+            System.out.println(picLabel.getLocation());
+            gameBoardCanvas.repaint();
         } catch (IOException ex) {
             System.out.println("No se encontró imagen");
-        }
-
-
-
+        }*/
 
 
         this.add(gameBoardCanvas);
+
+        this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         this.pack();
         this.setResizable(false);
         this.setTitle("BATTLECITY");
@@ -65,11 +67,16 @@ public class InterfazGrafica extends JFrame {
     }
 
     class GameBoardCanvas extends JPanel{
+        ImagePanel p = new ImagePanel(2,2);
+
+
         @Override
         public void paintComponent(Graphics g){
             super.paintComponent(g);
+
             crearObjetos(g);
             setBackground(new Color(4,6,46));
+            p.paintComponent(g);
         }
     }
     private void dibujaMetal(int x, int y,Graphics g2d){
@@ -196,12 +203,15 @@ public class InterfazGrafica extends JFrame {
     public class ImagePanel extends JPanel{
         int x=0,y=0;
         private BufferedImage image;
+        Image img;
 
         public ImagePanel(int x,int y) {
             this.x = x*GRIDSIZE;
             this.y=y*GRIDSIZE;
             try {
                 image = ImageIO.read(new File("src/pc2_BattleCity/tank.png"));
+                ImageIcon icon = new ImageIcon(image.getScaledInstance(3*GRIDSIZE, 3*GRIDSIZE,Image.SCALE_SMOOTH));
+                img = icon.getImage();
             } catch (IOException ex) {
                 System.out.println("No se encontró imagen");
             }
@@ -211,7 +221,9 @@ public class InterfazGrafica extends JFrame {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             System.out.println("Pintando");
-            g.drawImage(image, 0, 0,this); // see javadoc for more info on the parameters
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.rotate(3*Math.PI/2, x + 3*GRIDSIZE/2,y + 3*GRIDSIZE/2);
+            g2d.drawImage(img, x, y,null); // see javadoc for more info on the parameters
         }
 
         public void setPosition(int x, int y){
