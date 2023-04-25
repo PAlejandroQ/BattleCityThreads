@@ -54,9 +54,7 @@ public class InterfazGrafica extends JFrame {
 
     class GameBoardCanvas extends JPanel{
         ImagePanel p[] = new ImagePanel[3];
-
         int numTanques = 3;
-
         @Override
         public void paintComponent(Graphics g){
             super.paintComponent(g);

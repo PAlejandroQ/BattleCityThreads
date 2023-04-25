@@ -1,6 +1,7 @@
-package pc2_BattleCity;
+package pc2_BattleCity.server;
 
-import javax.swing.*;
+import pc2_BattleCity.*;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -9,16 +10,16 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 
-public class Servidor {
+public class Server {
     private ServerSocket servidorSocket;
-        private ArrayList<ConexionCliente> clientesConectados;
+    private ArrayList<Client> clientesConectados;
     private Mapa mapa;
     private ArrayList<Tanque> tanques;
     private ArrayList<Bala> balas;
     private ArrayList<Enemigo> enemigos;
     private int puerto;
 
-    public Servidor(int puerto) {
+    public Server(int puerto) {
         this.puerto = puerto;
         this.clientesConectados = new ArrayList<>();
         //this.mapa = new Mapa(new int[100][100]);
@@ -35,7 +36,7 @@ public class Servidor {
             while (true) {
                 Socket socketCliente = servidorSocket.accept();
                 BlockingQueue<Mensaje> colaMensajes = new LinkedBlockingQueue<>();
-                ConexionCliente cliente = new ConexionCliente(socketCliente, colaMensajes );
+                Client cliente = new Client(socketCliente, colaMensajes );
                 clientesConectados.add(cliente);
                 System.out.println("Nuevo cliente conectado desde la dirección: " + socketCliente.getInetAddress());
 
@@ -60,7 +61,7 @@ public class Servidor {
         }
 
         // Enviamos la actualización a todos los clientes
-        for (ConexionCliente cliente : clientesConectados) {
+        for (Client cliente : clientesConectados) {
             cliente.enviarTanques(tanques);
         }
     }
@@ -69,7 +70,7 @@ public class Servidor {
         balas.add(bala);
 
         // Enviamos la actualización a todos los clientes
-        for (ConexionCliente cliente : clientesConectados) {
+        for (Client cliente : clientesConectados) {
             cliente.enviarBalas(balas);
         }
     }
@@ -79,7 +80,7 @@ public class Servidor {
         // ...
 
         // Enviamos la actualización a todos los clientes
-        for (ConexionCliente cliente : clientesConectados) {
+        for (Client cliente : clientesConectados) {
             cliente.enviarTanques(tanques);
             cliente.enviarBalas(balas);
             cliente.enviarEnemigos(enemigos);
@@ -87,13 +88,7 @@ public class Servidor {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new InterfazGrafica();
-            }
-        });
-        Servidor servidor = new Servidor(5000);
+        Server servidor = new Server(5000);
         servidor.iniciarServidor();
     }
 }
