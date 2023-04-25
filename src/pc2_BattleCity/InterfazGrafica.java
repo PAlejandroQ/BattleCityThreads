@@ -169,6 +169,10 @@ public class InterfazGrafica extends JFrame implements KeyListener {
 
     private void moverJugador(int jugador, Direccion direccion) {
         Tanque t = juego.getTanque(jugador);
+        if(t.getDireccion()!=direccion){
+            t.setDireccion(direccion);
+            gameBoardCanvas.repaint();
+        }
         int x = t.getX(), y=t.getY();
         if(direccion== Direccion.ARRIBA){
             for(int i=0; i<3;i++){
@@ -247,6 +251,7 @@ public class InterfazGrafica extends JFrame implements KeyListener {
     public class ImagePanel extends JPanel{
         int x=0,y=0;
         Tanque t;
+        int direccion=0;
         private BufferedImage image;
         Image img;
 
@@ -269,7 +274,18 @@ public class InterfazGrafica extends JFrame implements KeyListener {
             super.paintComponent(g);
             System.out.println(x+ ""+y);
             Graphics2D g2d = (Graphics2D) g;
-            //g2d.rotate(3*Math.PI/2, x + 3*GRIDSIZE/2,y + 3*GRIDSIZE/2);
+            System.out.println(t.getDireccion());
+            if(t.getDireccion()==Direccion.DERECHA){
+                g2d.rotate(Math.PI/2, x + 3*GRIDSIZE/2,y + 3*GRIDSIZE/2);
+            }
+            else if(t.getDireccion()==Direccion.IZQUIERDA){
+                g2d.rotate(-Math.PI/2, x + 3*GRIDSIZE/2,y + 3*GRIDSIZE/2);
+            }
+            else if(t.getDireccion()==Direccion.ABAJO ){
+                g2d.rotate(2*Math.PI/2, x + 3*GRIDSIZE/2,y + 3*GRIDSIZE/2);
+            }
+
+
             g2d.drawImage(img, t.getX()*GRIDSIZE, t.getY()*GRIDSIZE,null); // see javadoc for more info on the parameters
         }
 

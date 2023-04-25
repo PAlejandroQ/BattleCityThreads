@@ -29,7 +29,7 @@ public class Juego {
         tanques.add(tanque1);
         tanques.add(tanque2);*/
         for(int i=0; i<numJugadores; ++i){
-            Tanque t = new Tanque(2,2,Direccion.ABAJO, 1);
+            Tanque t = new Tanque(2,2,Direccion.ARRIBA, 1);
             tanques.add(t);
         }
     }

@@ -69,6 +69,7 @@ public class Tanque {
 
     // Método para mover el tanque en la dirección actual
     public void mover(Direccion direccion) {
+        this.direccion = direccion;
         switch (direccion) {
             case ARRIBA: // arriba
                 y -= velocidad;
@@ -83,6 +84,7 @@ public class Tanque {
                 x -= velocidad;
                 break;
         }
+
     }
 
     // Método para disparar una bala
