@@ -1,5 +1,6 @@
 package pc2_BattleCity;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -7,18 +8,33 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 
-public class ConexionCliente implements Runnable {
+public class Client implements Runnable {
     private Socket socketCliente;
     private ObjectInputStream entrada;
     private ObjectOutputStream salida;
     private BlockingQueue<Mensaje> colaMensajes;
 
-    public ConexionCliente(Socket socketCliente, BlockingQueue<Mensaje> colaMensajes) throws IOException {
+    public Client(Socket socketCliente, BlockingQueue<Mensaje> colaMensajes) throws IOException {
         this.socketCliente = socketCliente;
         this.entrada = new ObjectInputStream(socketCliente.getInputStream());
         this.salida = new ObjectOutputStream(socketCliente.getOutputStream());
         this.colaMensajes = colaMensajes;
     }
+
+    public static void main(String[] args) {
+        //Start the gui (When a user want to play a game, this is the beginning)
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new InterfazGrafica();
+            }
+        });
+
+        //
+
+
+    }
+
 
     public void enviarMensaje(Mensaje mensaje) {
         try {
@@ -59,4 +75,6 @@ public class ConexionCliente implements Runnable {
 
     public void enviarBalas(ArrayList<Bala> balas) {
     }
+
+
 }
