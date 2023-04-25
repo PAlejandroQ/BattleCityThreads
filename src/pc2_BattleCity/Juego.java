@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Juego {
+    private int numJugadores=1;
     public Mapa mapa;
     private List<Tanque> tanques;
     private List<Bala> balas;
@@ -23,10 +24,14 @@ public class Juego {
     // Método para crear los tanques
     private void crearTanques() {
         // Crear los tanques y agregarlos a la lista de tanques
-        Tanque tanque1 = new Tanque(0, 0, Direccion.ARRIBA, 1);
+        /*Tanque tanque1 = new Tanque(0, 0, Direccion.ARRIBA, 1);
         Tanque tanque2 = new Tanque(mapa.getAncho() - 1, mapa.getAlto() - 1, Direccion.ABAJO, 1);
         tanques.add(tanque1);
-        tanques.add(tanque2);
+        tanques.add(tanque2);*/
+        for(int i=0; i<numJugadores; ++i){
+            Tanque t = new Tanque(2,2,Direccion.ABAJO, 1);
+            tanques.add(t);
+        }
     }
 
     // Método para crear los enemigos
@@ -102,6 +107,9 @@ public class Juego {
 
     public int getNumTanques(){
         return tanques.size();
+    }
+    public Tanque getTanque(int index){
+        return tanques.get(index);
     }
 
 }

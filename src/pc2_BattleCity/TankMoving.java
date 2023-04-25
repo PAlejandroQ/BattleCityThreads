@@ -67,16 +67,16 @@ public class TankMoving extends JFrame implements KeyListener {
         // Mueve el tanque según la tecla presionada
         switch (key) {
             case KeyEvent.VK_W:
-                tanqueY -= 5;
+                tanqueY -= GRIDSIZE;
                 break;
             case KeyEvent.VK_A:
-                tanqueX -= 5;
+                tanqueX -= GRIDSIZE;
                 break;
             case KeyEvent.VK_S:
-                tanqueY += 5;
+                tanqueY += GRIDSIZE;
                 break;
             case KeyEvent.VK_D:
-                tanqueX += 5;
+                tanqueX += GRIDSIZE;
                 break;
         }
 
