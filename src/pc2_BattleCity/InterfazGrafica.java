@@ -172,6 +172,7 @@ public class InterfazGrafica extends JFrame implements KeyListener {
         if(t.getDireccion()!=direccion){
             t.setDireccion(direccion);
             gameBoardCanvas.repaint();
+            return;
         }
         int x = t.getX(), y=t.getY();
         if(direccion== Direccion.ARRIBA){
