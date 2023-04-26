@@ -26,7 +26,7 @@ public class Client implements Runnable {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new InterfazGrafica();
+                new InterfazGrafica(new Juego());
             }
         });
 

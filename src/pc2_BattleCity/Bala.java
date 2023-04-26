@@ -1,6 +1,10 @@
 package pc2_BattleCity;
 
+import java.time.Duration;
+import java.time.Instant;
+
 public class Bala {
+    public Instant tiempoDisparo;
     private int x; // posición x de la bala
     private int y; // posición y de la bala
     private Direccion direccion; // dirección de la bala (1=arriba, 2=derecha, 3=abajo, 4=izquierda)
@@ -8,6 +12,7 @@ public class Bala {
 
     // Constructor
     public Bala(int x, int y, Direccion direccion, int potencia) {
+        this.tiempoDisparo= Instant.now();
         this.x = x;
         this.y = y;
         this.direccion = direccion;
@@ -63,5 +68,6 @@ public class Bala {
                 x--;
                 break;
         }
+        tiempoDisparo = Instant.now();
     }
 }
