@@ -5,7 +5,9 @@ import pc2_BattleCity.serverTest2.Cliente;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class Juego {
     InterfazGrafica window;
@@ -16,6 +18,8 @@ public class Juego {
     private List<Enemigo> enemigos;
 
     public Cliente conexionCliente;
+
+    Queue<String> colaEntrantes;
 
     // Constructor
     public Juego() {
@@ -29,6 +33,11 @@ public class Juego {
         this.window = new InterfazGrafica(this);
         this.conexionCliente = new Cliente(this);
         this.conexionCliente.iniciar();
+        colaEntrantes  = new LinkedList<>();
+    }
+
+    public void addMessageFromServer(String datoDeServer){
+        this.colaEntrantes.add(datoDeServer);
     }
 
     // Método para crear los tanques

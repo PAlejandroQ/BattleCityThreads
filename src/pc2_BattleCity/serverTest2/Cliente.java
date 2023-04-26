@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class Cliente {
 
-    private Juego juego;
+    public Juego juego;
     private ObjectOutputStream salida;
     private Scanner scanner;
 
@@ -72,6 +72,7 @@ public class Cliente {
                         while (true) {
                             // Leer el mensaje recibido y mostrarlo en pantalla
                             String mensaje = (String) entrada.readObject();
+                            juego.addMessageFromServer(mensaje);
                             System.out.println(mensaje);
                         }
                     } catch (IOException | ClassNotFoundException ex) {
