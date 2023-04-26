@@ -55,6 +55,12 @@ public class InterfazGrafica extends JFrame implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
 
+        try {
+            this.juego.conexionCliente.enviarMensaje(String.valueOf(key));
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+
         // Mueve el tanque según la tecla presionada
         switch (key) {
             case KeyEvent.VK_W:

@@ -1,5 +1,7 @@
 package pc2_BattleCity.client.gui;
 
+import pc2_BattleCity.serverTest2.Cliente;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -13,6 +15,8 @@ public class Juego {
     public List<Bala> balas;
     private List<Enemigo> enemigos;
 
+    public Cliente conexionCliente;
+
     // Constructor
     public Juego() {
         // Crear el mapa, los tanques, las balas y los enemigos
@@ -23,6 +27,8 @@ public class Juego {
         crearTanques();
         crearEnemigos();
         this.window = new InterfazGrafica(this);
+        this.conexionCliente = new Cliente(this);
+        this.conexionCliente.iniciar();
     }
 
     // Método para crear los tanques

@@ -20,5 +20,8 @@ public class Mensaje implements Serializable {
     public Object getDatos() {
         return datos;
     }
+
+    public void setID(int id) {
+    }
 }
 

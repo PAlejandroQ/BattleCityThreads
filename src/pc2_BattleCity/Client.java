@@ -1,5 +1,7 @@
 package pc2_BattleCity;
 
+
+
 import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -8,6 +10,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 
+/*
 public class Client implements Runnable {
     private Socket socketCliente;
     private ObjectInputStream entrada;
@@ -78,3 +81,4 @@ public class Client implements Runnable {
 
 
 }
+*/
