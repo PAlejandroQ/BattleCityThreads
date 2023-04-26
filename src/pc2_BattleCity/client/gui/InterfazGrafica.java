@@ -8,6 +8,8 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
 
 public class InterfazGrafica extends JFrame implements KeyListener {
     GameBoardCanvas gameBoardCanvas;
@@ -21,8 +23,8 @@ public class InterfazGrafica extends JFrame implements KeyListener {
 
 
 
-    public InterfazGrafica() {
-        this.juego = new Juego();
+    public InterfazGrafica(Juego j) {
+        this.juego = j;
         this.gameBoardCanvas = new GameBoardCanvas();
 
         gameBoardCanvas.setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -67,6 +69,9 @@ public class InterfazGrafica extends JFrame implements KeyListener {
             case KeyEvent.VK_D:
                 moverJugador(0, Direccion.DERECHA);
                 break;
+            case KeyEvent.VK_SPACE:
+                dispararJugador(0,juego.getTanque(0).getDireccion());
+                break;
         }
 
         // Actualiza la posición del JLabel del tanque
@@ -84,6 +89,7 @@ public class InterfazGrafica extends JFrame implements KeyListener {
         int numTanques = 1;
         @Override
         public void paintComponent(Graphics g){
+            System.out.println("REPINTANDO");
             super.paintComponent(g);
             crearObjetos(g);
             setBackground(new Color(4,6,46));
@@ -91,7 +97,16 @@ public class InterfazGrafica extends JFrame implements KeyListener {
             for(int i=0;i<numTanques;++i){
                 p[i].paintComponent(g);
             }
+            for(Bala bala : juego.balas){
+                g.setColor(Color.white);
+                g.fillOval(bala.getX()*GRIDSIZE, bala.getY()*GRIDSIZE, GRIDSIZE, GRIDSIZE);
+                System.out.println(bala.getX() + "|" + bala.getY());
+            }
 
+        }
+
+        public void actualizar(){
+            repaint();
         }
 
     }
@@ -210,17 +225,15 @@ public class InterfazGrafica extends JFrame implements KeyListener {
         t.mover(direccion);
     }
 
-    private void dispararJugador(int jugador) {
-        // Crear bala del jugador
-        // ...
+    private void dispararJugador(int jugador, Direccion direccion) {
+        juego.disparar(jugador);
+        actualizarBalas();
     }
 
     private void actualizarBalas() {
-        // Actualizar posiciones de las balas
-        // ...
-
-        // Comprobar colisiones de las balas
-        // ...
+        for(Bala bala : juego.balas ){
+            repaint();
+        }
     }
 
     private void moverEnemigos() {
@@ -292,6 +305,16 @@ public class InterfazGrafica extends JFrame implements KeyListener {
 
 
             g2d.drawImage(img, t.getX()*GRIDSIZE, t.getY()*GRIDSIZE,null); // see javadoc for more info on the parameters
+
+            if(t.getDireccion()==Direccion.DERECHA){
+                g2d.rotate(-Math.PI/2, x + 3*GRIDSIZE/2,y + 3*GRIDSIZE/2);
+            }
+            else if(t.getDireccion()==Direccion.IZQUIERDA){
+                g2d.rotate(Math.PI/2, x + 3*GRIDSIZE/2,y + 3*GRIDSIZE/2);
+            }
+            else if(t.getDireccion()==Direccion.ABAJO ){
+                g2d.rotate(-2*Math.PI/2, x + 3*GRIDSIZE/2,y + 3*GRIDSIZE/2);
+            }
         }
 
         public void setPosition(int x, int y){
@@ -326,7 +349,5 @@ public class InterfazGrafica extends JFrame implements KeyListener {
 
     }
 
-    public static void main(String[] args) {
-        new InterfazGrafica();
-    }
+
 }

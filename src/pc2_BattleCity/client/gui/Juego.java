@@ -1,13 +1,16 @@
 package pc2_BattleCity.client.gui;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Juego {
+    InterfazGrafica window;
     private int numJugadores=1;
     public Mapa mapa;
     private List<Tanque> tanques;
-    private List<Bala> balas;
+    public List<Bala> balas;
     private List<Enemigo> enemigos;
 
     // Constructor
@@ -19,6 +22,7 @@ public class Juego {
         this.enemigos = new ArrayList<>();
         crearTanques();
         crearEnemigos();
+        this.window = new InterfazGrafica(this);
     }
 
     // Método para crear los tanques
@@ -53,54 +57,82 @@ public class Juego {
     public void disparar(int indiceTanque) {
         // Crear una nueva bala en la posición del tanque y con la dirección del cañón
         Tanque tanque = tanques.get(indiceTanque);
-        Bala bala = new Bala(tanque.getX(), tanque.getY(), tanque.getDireccionCanon(), 1);
+        Bala bala;
+        if(tanque.getDireccion()==Direccion.ARRIBA){
+            bala = new Bala(tanque.getX() + 1, tanque.getY(), tanque.getDireccionCanon(), 1);
+        }
+        else if(tanque.getDireccion()==Direccion.DERECHA){
+            bala = new Bala(tanque.getX() + 3, tanque.getY()+1, tanque.getDireccionCanon(), 1);
+        }
+        else if(tanque.getDireccion()==Direccion.ABAJO){
+            bala = new Bala(tanque.getX() + 1, tanque.getY()+3, tanque.getDireccionCanon(), 1);
+        }
+        else{
+            bala = new Bala(tanque.getX(), tanque.getY()+1, tanque.getDireccionCanon(), 1);
+        }
+
         balas.add(bala);
+        Thread t = new Thread(() ->{
+           actualizarBala(bala);
+        });
+        t.start();
     }
 
     // Método para mover las balas y detectar colisiones
     // Método para mover las balas y detectar colisiones
-    public void actualizarBalas() {
+    public void actualizarBala(Bala bala) {
         // Mover cada bala y comprobar si choca con un tanque o un enemigo
-        for (Bala bala : balas) {
-            bala.mover();
-
-            // Comprobar si la bala choca con un tanque
-            for (Tanque tanque : tanques) {
-                if (bala.getX() == tanque.getX() && bala.getY() == tanque.getY()) {
-                    // La bala chocó con un tanque
-                    tanque.recibirDanio(bala.getPotencia());
-                    balas.remove(bala);
-                    return;
+        boolean hit=false;
+        while(!hit){
+            if(Duration.between(bala.tiempoDisparo, Instant.now()).toSeconds()>=0.05){
+                bala.tiempoDisparo=Instant.now();
+                bala.mover();
+                window.gameBoardCanvas.actualizar();
+                //System.out.println("ACTUALIZA BALA: " + bala.getX() + " " + bala.getY());
+                // Comprobar si la bala choca con un tanque
+                for (Tanque tanque : tanques) {
+                    if (bala.getX() == tanque.getX() && bala.getY() == tanque.getY()) {
+                        // La bala chocó con un tanque
+                        tanque.recibirDanio(bala.getPotencia());
+                        balas.remove(bala);
+                        hit=true;
+                        break;
+                    }
                 }
-            }
 
-            // Comprobar si la bala choca con un enemigo
-            for (Enemigo enemigo : enemigos) {
-                if (bala.getX() == enemigo.getX() && bala.getY() == enemigo.getY()) {
-                    // La bala chocó con un enemigo
-                    enemigo.recibirDanio(bala.getPotencia());
-                    balas.remove(bala);
-                    return;
+                // Comprobar si la bala choca con un enemigo
+                for (Enemigo enemigo : enemigos) {
+                    if (bala.getX() == enemigo.getX() && bala.getY() == enemigo.getY()) {
+                        // La bala chocó con un enemigo
+                        enemigo.recibirDanio(bala.getPotencia());
+                        balas.remove(bala);
+                        hit=true;
+                        break;
+                    }
                 }
-            }
 
-            // Comprobar si la bala choca con un muro destruible
-            if (mapa.esMuroDestruible(bala.getX(), bala.getY())) {
-                mapa.destruirMuro(bala.getX(), bala.getY());
-                balas.remove(bala);
-                return;
-            }
+                // Comprobar si la bala choca con un muro destruible
+                if (mapa.esMuroDestruible(bala.getX(), bala.getY())) {
+                    mapa.destruirMuro(bala.getX(), bala.getY());
+                    balas.remove(bala);
+                    hit=true;
+                    continue;
+                }
 
-            // Comprobar si la bala choca con un muro no destruible
-            if (mapa.esMuroNoDestruible(bala.getX(), bala.getY())) {
-                balas.remove(bala);
-                return;
-            }
+                // Comprobar si la bala choca con un muro no destruible
+                if (mapa.esMuroNoDestruible(bala.getX(), bala.getY())) {
+                    balas.remove(bala);
+                    hit=true;
+                    continue;
+                }
 
-            // Comprobar si la bala sale del mapa
-            if (bala.getX() < 0 || bala.getX() >= mapa.getAncho() || bala.getY() < 0 || bala.getY() >= mapa.getAlto()) {
-                balas.remove(bala);
-                return;
+                // Comprobar si la bala sale del mapa
+                if (bala.getX() < 0 || bala.getX() >= mapa.getAncho() || bala.getY() < 0 || bala.getY() >= mapa.getAlto()) {
+                    balas.remove(bala);
+                    hit=true;
+                    continue;
+                }
+
             }
         }
     }
@@ -112,4 +144,8 @@ public class Juego {
         return tanques.get(index);
     }
 
+    public static void main(String[] args) {
+        new Juego();
+    }
 }
+
