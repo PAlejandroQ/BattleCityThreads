@@ -31,7 +31,7 @@ public class TankMoving extends JFrame implements KeyListener {
         this.juego = new Juego();
 
         // Carga la imagen del tanque y redimensionarla
-        tanqueIcon = new ImageIcon("src/pc2_BattleCity/tank.png");
+        tanqueIcon = new ImageIcon("src/pc2_BattleCity/client/gui/tank.png");
         Image imagenOriginal = tanqueIcon.getImage();
         Image imagenRedimensionada = imagenOriginal.getScaledInstance(3*GRIDSIZE, 3*GRIDSIZE, Image.SCALE_SMOOTH);
         tanqueIcon = new ImageIcon(imagenRedimensionada);

@@ -33,7 +33,7 @@ public class SquareFrame extends JFrame {
         public ImagePanel() {
 
             try {
-                image = ImageIO.read(new File("src/pc2_BattleCity/tank.png"));
+                image = ImageIO.read(new File("src/pc2_BattleCity/client/gui/tank.png"));
             } catch (IOException ex) {
                 System.out.println("No se encontró imagen");
             }

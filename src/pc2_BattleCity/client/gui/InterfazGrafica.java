@@ -265,7 +265,7 @@ public class InterfazGrafica extends JFrame implements KeyListener {
             this.x = t.getX()*GRIDSIZE;
             this.y = t.getY()*GRIDSIZE;
             try {
-                image = ImageIO.read(new File("src/pc2_BattleCity/tank.png"));
+                image = ImageIO.read(new File("src/pc2_BattleCity/client/gui/tank.png"));
                 ImageIcon icon = new ImageIcon(image.getScaledInstance(3*GRIDSIZE, 3*GRIDSIZE,Image.SCALE_SMOOTH));
                 img = icon.getImage();
             } catch (IOException ex) {
@@ -309,7 +309,7 @@ public class InterfazGrafica extends JFrame implements KeyListener {
 
         public EaglePanel() {
             try {
-                image = ImageIO.read(new File("src/pc2_BattleCity/eagle.png"));
+                image = ImageIO.read(new File("src/pc2_BattleCity/client/gui/eagle.png"));
                 ImageIcon icon = new ImageIcon(image.getScaledInstance(4*GRIDSIZE, 4*GRIDSIZE,Image.SCALE_SMOOTH));
                 img = icon.getImage();
             } catch (IOException ex) {
