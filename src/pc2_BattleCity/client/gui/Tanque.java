@@ -1,4 +1,4 @@
-package pc2_BattleCity;
+package pc2_BattleCity.client.gui;
 
 public class Tanque {
     private int x; // posición x del tanque

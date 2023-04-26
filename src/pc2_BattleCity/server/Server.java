@@ -1,16 +1,74 @@
 package pc2_BattleCity.server;
 
-import pc2_BattleCity.*;
+import pc2_BattleCity.client.Client;
+import pc2_BattleCity.client.gui.*;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-
 public class Server {
+
+    TCPServer tcpServer;
+    Scanner sc;
+
+    public static void main(String[] args) {
+        Server server = new Server();
+        server.startLive();
+    }
+
+    void startLive() {
+        new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        tcpServer = new TCPServer(
+                                new TCPServer.OnMessageReceived() {
+                                    @Override
+                                    public void messageReceived(String message) {
+                                        serverReceive(message);
+                                    }
+                                }
+                        );
+                        tcpServer.partRun();
+                    }
+                }
+        ).start();
+
+        String quitGame = "serverSayNoQuitGame";
+        sc = new Scanner(System.in);
+        System.out.println("El servidor comenzo el juego");
+        while (!quitGame.equals("serverSayYesQuitGame")) {
+            quitGame = sc.nextLine();
+            serverSend(quitGame);
+        }
+        System.out.println("Servidor termino el juego");
+    }
+
+
+    void serverReceive(String message) {
+        if (message == "quitGame") {
+            //Close the thread i of connection client server
+            serverSend("Un jugador dejo el juego");
+        }
+        serverSend("update coordenates");
+        System.out.println("client El mensaje:" + message);
+    }
+
+    void serverSend(String message) {
+        if (tcpServer != null) {
+            tcpServer.sendMessageTCPServer(message);
+        }
+    }
+
+}
+
+/*
+public class s {
     private ServerSocket servidorSocket;
     private ArrayList<Client> clientesConectados;
     private Mapa mapa;
@@ -19,7 +77,7 @@ public class Server {
     private ArrayList<Enemigo> enemigos;
     private int puerto;
 
-    public Server(int puerto) {
+    public s(int puerto) {
         this.puerto = puerto;
         this.clientesConectados = new ArrayList<>();
         //this.mapa = new Mapa(new int[100][100]);
@@ -87,8 +145,11 @@ public class Server {
         }
     }
 
-    public static void main(String[] args) {
-        Server servidor = new Server(5000);
-        servidor.iniciarServidor();
-    }
+//    public static void main(String[] args) {
+//        s servidor = new s(5000);
+//        servidor.iniciarServidor();
+//    }
 }
+
+
+ */

@@ -1,4 +1,4 @@
-package pc2_BattleCity;
+package pc2_BattleCity.client.gui;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.Graphics;
