@@ -11,9 +11,9 @@ import java.io.IOException;
 
 public class InterfazGrafica extends JFrame implements KeyListener {
     GameBoardCanvas gameBoardCanvas;
-    public static final int HEIGHT=800;
-    public static final int WIDTH=800;
-    public static final int GRIDSIZE=20;
+    public static final int HEIGHT=600;
+    public static final int WIDTH=600;
+    public static final int GRIDSIZE=15;
     private int NIVEL=1;
 
 
@@ -27,8 +27,9 @@ public class InterfazGrafica extends JFrame implements KeyListener {
 
         gameBoardCanvas.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         gameBoardCanvas.p[0]=new ImagePanel(0);
+        gameBoardCanvas.e = new EaglePanel();
         this.add(gameBoardCanvas);
-        this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        this.setPreferredSize(new Dimension(WIDTH + 10, HEIGHT + 40));
         this.pack();
         this.setResizable(false);
         this.setTitle("BATTLECITY");
@@ -79,15 +80,18 @@ public class InterfazGrafica extends JFrame implements KeyListener {
 
     class GameBoardCanvas extends JPanel{
         ImagePanel p[] = new ImagePanel[3];
+        EaglePanel e;
         int numTanques = 1;
         @Override
         public void paintComponent(Graphics g){
             super.paintComponent(g);
             crearObjetos(g);
             setBackground(new Color(4,6,46));
+            e.paintComponent(g);
             for(int i=0;i<numTanques;++i){
                 p[i].paintComponent(g);
             }
+
         }
 
     }
@@ -273,7 +277,7 @@ public class InterfazGrafica extends JFrame implements KeyListener {
         protected void paintComponent(Graphics g) {
 
             super.paintComponent(g);
-            System.out.println(x+ ""+y);
+            System.out.println(x/GRIDSIZE+ " "+y/GRIDSIZE);
             Graphics2D g2d = (Graphics2D) g;
             System.out.println(t.getDireccion());
             if(t.getDireccion()==Direccion.DERECHA){
@@ -297,6 +301,31 @@ public class InterfazGrafica extends JFrame implements KeyListener {
         }
 
     }
+
+    public class EaglePanel extends JPanel{
+        int x=18,y=34;
+        private BufferedImage image;
+        Image img;
+
+        public EaglePanel() {
+            try {
+                image = ImageIO.read(new File("src/pc2_BattleCity/eagle.png"));
+                ImageIcon icon = new ImageIcon(image.getScaledInstance(4*GRIDSIZE, 4*GRIDSIZE,Image.SCALE_SMOOTH));
+                img = icon.getImage();
+            } catch (IOException ex) {
+                System.out.println("No se encontró imagen");
+            }
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.drawImage(img, x*GRIDSIZE, y*GRIDSIZE,null); // see javadoc for more info on the parameters
+        }
+
+    }
+
     public static void main(String[] args) {
         new InterfazGrafica();
     }
