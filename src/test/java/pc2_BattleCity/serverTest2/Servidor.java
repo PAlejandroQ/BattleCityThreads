@@ -6,17 +6,17 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.List;
 
 
-
-
-public class Servidor {
+public class
+Servidor {
     private final static int PUERTO = 5000;
+    private static ManagementArmament currentManagementArmament =  new ManagementArmament();;
     private static ArrayList<ConexionCliente> clientesConectados = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
         ServerSocket servidor = new ServerSocket(PUERTO);
+
         System.out.println("Servidor iniciado en el puerto " + PUERTO);
 
         while (true) {
@@ -24,6 +24,15 @@ public class Servidor {
             System.out.println("Nuevo cliente conectado desde " + socketCliente.getInetAddress().getHostAddress());
             ConexionCliente clienteConectado = new ConexionCliente(socketCliente);
             clientesConectados.add(clienteConectado);
+            /**
+             * Agregando los objetos armamento iniciales, la base del jugador tambien se considera armament
+             */
+            //Tanque
+
+
+
+//            currentManagementArmament.addObject()
+
             new Thread(clienteConectado).start();
         }
     }

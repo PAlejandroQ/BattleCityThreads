@@ -1,15 +1,6 @@
 package pc2_BattleCity.server;
 
-import pc2_BattleCity.client.Client;
-import pc2_BattleCity.client.gui.*;
-
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 public class Server {
 

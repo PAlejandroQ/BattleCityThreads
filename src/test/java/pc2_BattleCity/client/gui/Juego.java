@@ -1,10 +1,7 @@
 package pc2_BattleCity.client.gui;
 
-import com.sun.security.jgss.GSSUtil;
 import pc2_BattleCity.serverTest2.Cliente;
 
-import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;

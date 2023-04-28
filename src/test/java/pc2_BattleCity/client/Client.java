@@ -1,8 +1,5 @@
 package pc2_BattleCity.client;
 
-import pc2_BattleCity.client.gui.*;
-import pc2_BattleCity.server.TCPServer;
-
 import java.util.Scanner;
 
 public class Client {
