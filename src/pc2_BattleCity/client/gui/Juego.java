@@ -1,5 +1,6 @@
 package pc2_BattleCity.client.gui;
 
+import com.sun.security.jgss.GSSUtil;
 import pc2_BattleCity.serverTest2.Cliente;
 
 import java.time.Duration;
@@ -30,8 +31,8 @@ public class Juego {
         this.enemigos = new ArrayList<>();
         crearTanques();
         crearEnemigos();
-        this.window = new InterfazGrafica(this);
         this.conexionCliente = new Cliente(this);
+        this.window = new InterfazGrafica(this);
         this.conexionCliente.iniciar();
         colaEntrantes  = new LinkedList<>();
     }
@@ -87,22 +88,29 @@ public class Juego {
         }
 
         balas.add(bala);
-        Thread t = new Thread(() ->{
-           actualizarBala(bala);
-        });
+        ActualizarBalaThread t = new ActualizarBalaThread(bala);
         t.start();
+    }
+
+    class ActualizarBalaThread extends Thread{
+        Bala bala;
+        ActualizarBalaThread(Bala bala){
+            this.bala = bala;
+        }
+        @Override
+        public void run(){
+            actualizarBala(bala, this);
+        }
     }
 
     // Método para mover las balas y detectar colisiones
     // Método para mover las balas y detectar colisiones
-    public void actualizarBala(Bala bala) {
+    public void actualizarBala(Bala bala, Thread t) {
         // Mover cada bala y comprobar si choca con un tanque o un enemigo
         boolean hit=false;
         while(!hit){
-            if(Duration.between(bala.tiempoDisparo, Instant.now()).toSeconds()>=0.05){
-                bala.tiempoDisparo=Instant.now();
                 bala.mover();
-                window.gameBoardCanvas.actualizar();
+                window.actualizarBalas();
                 //System.out.println("ACTUALIZA BALA: " + bala.getX() + " " + bala.getY());
                 // Comprobar si la bala choca con un tanque
                 for (Tanque tanque : tanques) {
@@ -148,6 +156,14 @@ public class Juego {
                     continue;
                 }
 
+            try{
+                synchronized (t){
+                    t.wait(10);
+                    System.out.println("ESPERA");
+                }
+            }
+            catch(Exception e){
+                System.out.println(e);
             }
         }
     }

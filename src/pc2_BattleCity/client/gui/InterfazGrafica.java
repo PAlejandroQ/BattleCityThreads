@@ -103,12 +103,6 @@ public class InterfazGrafica extends JFrame implements KeyListener {
             for(int i=0;i<numTanques;++i){
                 p[i].paintComponent(g);
             }
-            for(Bala bala : juego.balas){
-                g.setColor(Color.white);
-                g.fillOval(bala.getX()*GRIDSIZE, bala.getY()*GRIDSIZE, GRIDSIZE, GRIDSIZE);
-                System.out.println(bala.getX() + "|" + bala.getY());
-            }
-
         }
 
         public void actualizar(){
@@ -233,12 +227,27 @@ public class InterfazGrafica extends JFrame implements KeyListener {
 
     private void dispararJugador(int jugador, Direccion direccion) {
         juego.disparar(jugador);
-        actualizarBalas();
     }
 
-    private void actualizarBalas() {
-        for(Bala bala : juego.balas ){
-            repaint();
+    public void actualizarBalas() {
+        Graphics2D g = (Graphics2D) gameBoardCanvas.getGraphics();
+        g.setBackground(new Color(4,6,46));
+        for(Bala bala : juego.balas){
+            if(bala.getDireccion()==Direccion.ARRIBA){
+                g.clearRect(bala.getX()*GRIDSIZE, (bala.getY()+1)*GRIDSIZE, GRIDSIZE, GRIDSIZE);
+            }
+            else if(bala.getDireccion()==Direccion.ABAJO){
+                g.clearRect(bala.getX()*GRIDSIZE, (bala.getY()-1)*GRIDSIZE, GRIDSIZE, GRIDSIZE);
+            }
+            else if(bala.getDireccion()==Direccion.IZQUIERDA){
+                g.clearRect((bala.getX()+1)*GRIDSIZE, bala.getY()*GRIDSIZE, GRIDSIZE, GRIDSIZE);
+            }
+            else if(bala.getDireccion()==Direccion.DERECHA){
+                g.clearRect((bala.getX()-1)*GRIDSIZE, bala.getY()*GRIDSIZE, GRIDSIZE, GRIDSIZE);
+            }
+            g.setColor(Color.white);
+            g.fillOval(bala.getX()*GRIDSIZE, bala.getY()*GRIDSIZE, GRIDSIZE, GRIDSIZE);
+            System.out.println(bala.getX() + "|" + bala.getY());
         }
     }
 
